@@ -42,6 +42,17 @@ public class PlayerController : MonoBehaviour
         {
             ThrustUpwards();
         }
+
+        if (JumpIsCancelled())
+        {
+            myRigidbody2D.velocity = new Vector2(myRigidbody2D.velocity.x
+                                                , myRigidbody2D.velocity.y * .3f);
+        }
+    }
+
+    private bool JumpIsCancelled()
+    {
+        return (Input.GetButtonUp("Jump") && myRigidbody2D.velocity.y > 0);
     }
 
     private void ThrustUpwards()
