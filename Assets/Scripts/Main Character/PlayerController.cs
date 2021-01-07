@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
 
         if (isControllable)
         {
-            MoveSideways(walkingSpeed);
+            MoveSideways();
             Jump();
         }
     }
@@ -48,11 +48,16 @@ public class PlayerController : MonoBehaviour
         myRigidbody2D.velocity = new Vector2(myRigidbody2D.velocity.x, jumpForce);
     }
 
-    private void MoveSideways(float movingSpeed)
+    private void MoveSideways()
+    {
+        Walk();
+    }
+
+    private void Walk()
     {
         float horizontalThrust = Input.GetAxisRaw("Horizontal");
 
-        myRigidbody2D.velocity = new Vector2(horizontalThrust * movingSpeed
-                                             ,myRigidbody2D.velocity.y);
+        myRigidbody2D.velocity = new Vector2(horizontalThrust * walkingSpeed
+                                             , myRigidbody2D.velocity.y); ;
     }
 }
