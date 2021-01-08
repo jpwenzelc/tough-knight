@@ -8,11 +8,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float walkingSpeed = 5f;
     [SerializeField] float jumpForce = 8f;
     [SerializeField] float runningSpeed = 8f;
+    [SerializeField] float hangTime = 0.2f;
 
     private Rigidbody2D myRigidbody2D;
     private CapsuleCollider2D feetCollider;
 
     private bool isGrounded;
+    private float hangTimeCounter;
 
     private void Start()
     {
@@ -23,6 +25,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         CheckGrounded();
+        CheckJumpingConditions();
 
         if (isControllable)
         {
@@ -36,18 +39,37 @@ public class PlayerController : MonoBehaviour
         isGrounded = feetCollider.IsTouchingLayers(LayerMask.GetMask("Stepable"));
     }
 
+    private void CheckJumpingConditions()
+    {
+        if (isGrounded)
+        {
+            hangTimeCounter = hangTime;
+        }
+        else
+        {
+            hangTimeCounter -= Time.deltaTime;
+        }
+    }
+
     private void Jump()
     {
-        if (isGrounded && Input.GetButtonDown("Jump"))
+        if (CanJumpThisFrame() && Input.GetButtonDown("Jump"))
         {
             ThrustUpwards();
         }
 
         if (JumpIsCancelled())
         {
+            hangTimeCounter = 0;
+
             myRigidbody2D.velocity = new Vector2(myRigidbody2D.velocity.x
                                                 , myRigidbody2D.velocity.y * .3f);
         }
+    }
+
+    private bool CanJumpThisFrame()
+    {
+        return hangTimeCounter > 0;
     }
 
     private bool JumpIsCancelled()
@@ -75,7 +97,6 @@ public class PlayerController : MonoBehaviour
     {
         float horizontalThrust = Input.GetAxisRaw("Horizontal");
         myRigidbody2D.velocity = new Vector2(horizontalThrust * runningSpeed
-
                                              , myRigidbody2D.velocity.y); ;
     }
 
