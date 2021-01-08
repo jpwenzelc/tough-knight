@@ -9,12 +9,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpForce = 8f;
     [SerializeField] float runningSpeed = 8f;
     [SerializeField] float hangTime = 0.2f;
+    [SerializeField] float jumpBuffer = 0.1f;
 
     private Rigidbody2D myRigidbody2D;
     private CapsuleCollider2D feetCollider;
 
     private bool isGrounded;
     private float hangTimeCounter;
+    private float jumpBufferCounter;
 
     private void Start()
     {
@@ -53,8 +55,18 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (CanJumpThisFrame() && Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump"))
         {
+            jumpBufferCounter = jumpBuffer;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
+
+        if (CanJumpThisFrame())
+        {
+            jumpBufferCounter = 0;
             ThrustUpwards();
         }
 
@@ -69,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CanJumpThisFrame()
     {
-        return hangTimeCounter > 0;
+        return hangTimeCounter > 0 && jumpBufferCounter > 0;
     }
 
     private bool JumpIsCancelled()
