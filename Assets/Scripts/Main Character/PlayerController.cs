@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -7,7 +6,6 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] float walkingSpeed = 5f;
     [SerializeField] float jumpForce = 8f;
-    [SerializeField] float runningSpeed = 8f;
     [SerializeField] float hangTime = 0.2f;
     [SerializeField] float jumpBuffer = 0.1f;
 
@@ -96,20 +94,7 @@ public class PlayerController : MonoBehaviour
 
     private void MoveSideways()
     {
-        if (Input.GetButton("Run"))
-        {
-            Run();
-            return;
-        }
-
         Walk();
-    }
-
-    private void Run()
-    {
-        float horizontalThrust = Input.GetAxisRaw("Horizontal");
-        myRigidbody2D.velocity = new Vector2(horizontalThrust * runningSpeed
-                                             , myRigidbody2D.velocity.y); ;
     }
 
     private void Walk()
