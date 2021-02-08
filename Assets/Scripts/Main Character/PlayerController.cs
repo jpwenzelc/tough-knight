@@ -102,6 +102,6 @@ public class PlayerController : MonoBehaviour
         float horizontalThrust = Input.GetAxisRaw("Horizontal");
 
         myRigidbody2D.velocity = new Vector2(horizontalThrust * walkingSpeed
-                                             , myRigidbody2D.velocity.y); ;
+                                             , myRigidbody2D.velocity.y);
     }
 }
